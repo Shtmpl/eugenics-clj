@@ -3,6 +3,18 @@
             [quil.middleware :as quil-middleware]
             [eugenics.application :as application]))
 
+
+(def background-colour [250 250 250])
+(def foreground-colour [50 50 50])
+
+(def living-colour [255 105 35])
+(def living-health-colour [250 250 250])
+
+(def food-colour [3 124 15])
+
+(def poison-colour [50 50 50])
+
+
 (defn result->grid [result]
   (if (seq result)
     (apply assoc {} (interleave (for [entity result] (:point entity))
@@ -44,21 +56,21 @@
 
   (case (:type content)
     :living
-    (do (quil/with-fill [52 106 193]
+    (do (quil/with-fill living-colour
                         (quil/rect-mode :center)
                         (quil/rect x y diameter diameter))
-        (quil/with-fill [184 190 198]
+        (quil/with-fill living-health-colour
                         (quil/text-align :center :center)
                         (quil/text-size (quot diameter 2))
                         (quil/text (str (:value content)) x y diameter diameter)))
 
     :food
-    (do (quil/with-fill [3 124 15]
+    (do (quil/with-fill food-colour
                         (quil/rect-mode :center)
                         (quil/rect x y diameter diameter)))
 
     :poison
-    (do (quil/with-fill [178 29 3]
+    (do (quil/with-fill poison-colour
                         (quil/rect-mode :center)
                         (quil/rect x y diameter diameter)))))
 
@@ -68,7 +80,8 @@
           (:lifespan statistics)))
 
 (defn draw [state]
-  (quil/background 34 44 61)
+  (apply quil/background background-colour)
+  (apply quil/fill foreground-colour)
 
   (quil/with-translation [(quot (quil/width) 2) (quot (quil/height) 2)]
                          (doseq [[[x y] content] (:grid state)

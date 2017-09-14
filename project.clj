@@ -6,9 +6,13 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/core.async "0.2.395"]
 
-                 [seesaw "1.4.5"]
                  [quil "2.5.0"]]
 
   :source-paths ["src/main/clojure"]
   :resource-paths ["src/main/resources"]
-  :test-paths ["src/test/clojure"])
+  :test-paths ["src/test/clojure"]
+
+  :aot  [eugenics.main]
+  :main eugenics.main
+
+  :uberjar-name "eugenics.jar")

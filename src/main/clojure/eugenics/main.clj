@@ -1,6 +1,7 @@
 (ns eugenics.main
   (:require [eugenics.visualisation :as visualisation]
-            [eugenics.application :as application]))
+            [clojure.pprint :as pprint])
+  (:gen-class))
 
 (defn random-int [from to]
   (+ (rand-int (- to from)) from))
@@ -25,28 +26,25 @@
        (repeat n)
        (mapv rand-nth)))
 
-(def actions
-  [(random-actions 64)
-   (random-actions 64)
-   (random-actions 64)
-   (random-actions 64)
-   (random-actions 64)
-   (random-actions 64)
-   (random-actions 64)
-   (random-actions 64)])
+;(def actions
+;  [(random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)
+;   (random-actions 64)])
 
-(def points (distinct-random-points 256 [-25 -15] [26 16]))
-;(def living-points (subvec points 0 64))
-;(def food-points (subvec points 64 128))
-;(def poison-points (subvec points 128 192))
+(def actions (into [] (repeat 8 (vec (repeat 64 :idle)))))
 
-(def living-points (distinct-random-points 64 [-9 -15] [-3 15]))
-(def poison-points (distinct-random-points 64 [-3 -15] [3 16]))
-(def food-points (distinct-random-points 64 [3 -15] [9 16]))
+(def living-points (distinct-random-points 64 [-20 -5] [-10 5]))
+(def poison-points (distinct-random-points 128 [-5 -10] [15 10]))
+(def food-points (distinct-random-points 64 [-5 -10] [15 10]))
 
 (def configuration
   {:title      "Genetic Algorithms"
-   :size       [1300 700]
+   :size       [1300 800]
    :speed      1024
 
    :experiment {:configuration {:points            {:living living-points
@@ -54,12 +52,10 @@
                                                     :poison poison-points}
                                 :available-actions available-actions
                                 :actions           actions
-                                :health            35}
+                                :health            50}
                 :statistics    {:iteration 0
                                 :lifespan  0}
                 :result        {}}})
 
 (defn -main [& args]
   (visualisation/display configuration))
-
-(-main)
